@@ -17,18 +17,20 @@ idx_react_time = round(RTs./3) + 1000; % RTs starts from 3000 ms , so we sum (10
 
 Coord_x = EyeX_;
 Coord_y = EyeY_;
-%% Preprocessing: screen resolution = 1025 x 768
+%% Preprocessing: screen resolution = 1025 x 768, center of the screen is (384,512)
 % 1. Fill the gaps (NaN) with interpolated points
 % NB: trajectories X and Y are handled separately. In case we want combine
 % them we have to treat NaN and interpolation differently, discarding
 % values wheter either X or Y or both are NaN.
 
+%initialise variable
 indici = 1:size(Coord_x,2);
 Coord_x_interp = zeros(size(EyeX_));
 Coord_y_interp = zeros(size(EyeY_));
 raw_normaliz_preprocessed_x = zeros(size(EyeX_));
 raw_normaliz_preprocessed_y = zeros(size(EyeY_));
 
+%loop over trial
 for i = 1:size(EyeX_,1)
 
             %If first point of the sequence is NaN, replace with the center of
@@ -38,13 +40,26 @@ for i = 1:size(EyeX_,1)
                 Coord_y(i,1) = 512;
             end
             
-            %Filling target coordinate after target identification -- it corresponds to RTs 
-            Coord_x(i,idx_react_time(i):end) = Coord_x(i,idx_react_time(i));
-            Coord_y(i,idx_react_time(i):end) = Coord_y(i,idx_react_time(i));
-            
-            %Check for zero coordinates along the trial
+            %If trajectories contain zeros, fill with NaN
+            %(Check for zero coordinates along the trial, as they are
+            %outliers)
             Coord_x(i,Coord_x(i,:)==0) = NaN;
             Coord_y(i,Coord_y(i,:)==0) = NaN;
+            
+
+            %Look for the last non-NaN element before RTs
+            %This tells in the chunck from the beginning till the RT which
+            %values are NaN and which not
+            k1 = isnan(Coord_x(i,1:idx_react_time(i)));
+            k2 = isnan(Coord_y(i,1:idx_react_time(i)));
+            %We want the Index of the Non-Nan, so we can take the last
+            %coordinate and replace it in the trajectory.
+            idx_k1 = find(k1==0);
+            idx_k2 = find(k2==0);
+            %Filling target coordinate after target identification -- it corresponds to RTs 
+            Coord_x(i,idx_k1(end):end) = Coord_x(i,idx_k1(end));
+            Coord_y(i,idx_k2(end):end) = Coord_y(i,idx_k2(end));
+
             
             %Identify query points for interpolation, and fx at query points
             idx_not_Nan = double(indici(isnan(Coord_x(i,:))==0));
@@ -64,8 +79,8 @@ for i = 1:size(EyeX_,1)
             assert(sum(find(isnan(Coord_x_interp(i,:))))==0)
             assert(sum(find(isnan(Coord_y_interp(i,:))))==0)
             
-            clear idx_not_Nan; clear idy_not_Nan; clear f_idx_Nan; clear f_idy_Nan
- 
+            clear idx_not_Nan; clear idy_not_Nan; clear f_idx_Nan; clear f_idy_Nan; clear idx_k1; clear idx_k2;
+            clear k1; clear k2; 
         
             %The next bit compute mean and standard deviation for z-scoring
             %trajectories
