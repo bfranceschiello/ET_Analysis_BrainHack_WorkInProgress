@@ -1,10 +1,6 @@
-# "Machine learning algorithms on eye tracking trajectories to classify patients with spatial neglect"
+# "Project 7: Artificial intelligence-based techniques for neglect identification" @ [Brain Hack Warsaw](https://brainhackwarsaw.github.io/)
 
-<p float="middle">
-  <img src="https://github.com/bfranceschiello/EyeTracking_preprocessing_and_ML_analysis/blob/main/3_Figures/eye_trajectory_task.png" />
-</p>
-
-This repository contains the code used for the [paper](https://www.medrxiv.org/content/medrxiv/early/2021/12/03/2020.07.02.20143941.full.pdf): "Machine learning algorithms on eye tracking trajectories to classify patients with spatial neglect". 
+This repository contains the code developed for generalise Eye-tracking trajectory analysis and classification techniques, inspired to the one developed and used for the [paper](https://www.medrxiv.org/content/medrxiv/early/2021/12/03/2020.07.02.20143941.full.pdf): "Machine learning algorithms on eye tracking trajectories to classify patients with spatial neglect". 
 
 Please cite the paper if you are using either our dataset, preprocessing or model.
 
