@@ -28,3 +28,4 @@ To run the classification script, users can utilize the script located inside [t
 ```python
 Cnn_and_ML_analysis.ipynb
 ```
+For full Machine Learning and Deep Learning processing, please refer to the [following repo](https://github.com/bfranceschiello/EyeTracking_preprocessing_and_ML_analysis/tree/main/2_ML_Analysis) 
